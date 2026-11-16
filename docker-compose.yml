@@ -1,0 +1,31 @@
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=${MSSQL_SA_PASSWORD}
+    ports:
+      - "1433:1433"
+
+  todo-list-api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ConnectionStrings__DefaultConnection=${ConnectionStrings__DefaultConnection}
+    ports:
+      - "8080:8080"
+    depends_on:
+      - sqlserver
+
+  todo-list-web:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        - VITE_API_URL=${VITE_API_URL}
+    ports:
+      - "3000:8080"
+    depends_on:
+      - todo-list-api

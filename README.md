@@ -1,12 +1,39 @@
-# App Template Fullstack (Golden Path - Vicoders)
+# Todo List - Gestión de Tareas (Golden Path - Vicoders)
 
-Repositorio plantilla corporativo gobernado por TI para la creación de aplicaciones Fullstack asistidas por IA (**Codex / Antigravity**).
-
-> **Nota:** Este repositorio plantilla contiene únicamente la estructura de gobernanza, reglas (`Rules`), procedimientos (`Skills`), memoria del proyecto (`MEMORY.md`), pipelines CI/CD y documentación de uso. El código fuente de cada aplicación (`backend/` en .NET 10 Clean Architecture y `frontend/` en React + TypeScript con Node 26 LTS) es generado automáticamente por el agente mediante las **Skills y Rules** incluidas en `.agents/`.
+Aplicación Fullstack para gestión de tareas (`todo-list`) construida sobre el template corporativo gobernado por TI.
 
 ---
 
-## 📋 Contenido del Template
+## 🏗️ Arquitectura y Estructura del Proyecto
+
+### Backend (`backend/TodoList.sln` - `.NET 10` Minimal APIs en Clean Architecture)
+- **`TodoList.Domain`:** Entidad `TodoItem` (`Id`, `Title`, `Description`, `IsCompleted`, `CreatedAt`) e interfaz `ITodoRepository`. Cero dependencias externas.
+- **`TodoList.Application`:** DTOs (`TodoDto`, `CreateTodoDto`, `UpdateTodoDto`) y caso de uso centralizado `TodoService` (DRY, validaciones de dominio).
+- **`TodoList.Infrastructure`:** `AppDbContext` (Entity Framework Core SQL Server / InMemory para pruebas), `TodoRepository` e inyección de dependencias (`DependencyInjection.cs`) sin fallbacks silenciosos.
+- **`TodoList.Api`:** Endpoints Minimal API (`/health` y `/api/todos`) y configuración CORS.
+- **`TodoList.Tests`:** Pruebas de arquitectura (`ArchitectureTests.cs`) y pruebas de integración CRUD (`TodoApiTests.cs`) con `xUnit` y `WebApplicationFactory`.
+
+### Frontend (`frontend/` - React 19 + TypeScript + Vite en Node.js 26 LTS)
+- Cliente HTTP centralizado (`src/services/todoApi.ts`) consumiendo `import.meta.env.VITE_API_URL` sin fallbacks silenciosos.
+- Interfaz CRUD completa (`src/App.tsx`): listar, crear, editar título/descripción, alternar estado completado y eliminar tareas.
+- Pruebas automatizadas en `src/App.test.tsx` con `Vitest` y `@testing-library/react`.
+
+---
+
+## 🔌 Endpoints de la API
+
+| Método | Ruta | Descripción |
+| :--- | :--- | :--- |
+| `GET` | `/health` | Estado de salud del servicio |
+| `GET` | `/api/todos` | Lista todas las tareas ordenadas por fecha de creación |
+| `GET` | `/api/todos/{id}` | Obtiene una tarea por su `Id` |
+| `POST` | `/api/todos` | Crea una nueva tarea (`Title` obligatorio, `Description` opcional) |
+| `PUT` | `/api/todos/{id}` | Actualiza `Title`, `Description` e `IsCompleted` de una tarea |
+| `DELETE` | `/api/todos/{id}` | Elimina una tarea existente |
+
+---
+
+## 📋 Gobernanza del Repositorio
 
 | Archivo / Ruta | Propósito |
 | :--- | :--- |
