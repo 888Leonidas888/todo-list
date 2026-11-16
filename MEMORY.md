@@ -35,3 +35,19 @@
 - [x] **Tarea 2:** Configurar reglas de ingeniería (`.agents/rules/golden-path-rules.md`, `.github/copilot-instructions.md`), inicializar `MEMORY.md` y crear las Skills operativas en `.agents/skills/`.
 - [x] **Tarea 3:** Aprobar y fusionar el Pull Request #1 de reglas y skills hacia `main`.
 - [x] **Tarea 4:** Separar bases de datos por entorno (`VicoderLocalDb` en local, `BooksDb_QA` con `db-connection-string-qa` para QA, `BooksDb_Prod` con `db-connection-string-prod` para Producción), instalar Skill Global `init-vicoder-project` y asignar a `888Leonidas888` como Revisor Obligatorio en `production`.
+
+### Plan 2: Inicialización de Aplicación `todo-list` (Gestión de Tareas)
+- **Dominio Aprobado:**
+  - **Solución:** `TodoList.sln` (`TodoList.Domain`, `TodoList.Application`, `TodoList.Infrastructure`, `TodoList.Api`, `TodoList.Tests`).
+  - **Entidad Principal (`TodoItem`):** `Id` (`int`), `Title` (`string`, obligatorio), `Description` (`string?`, opcional), `IsCompleted` (`bool`), `CreatedAt` (`DateTime`).
+  - **Operaciones (CRUD Completo):**
+    - `GET /api/todos` (listar todas las tareas)
+    - `GET /api/todos/{id}` (obtener tarea por ID)
+    - `POST /api/todos` (crear tarea)
+    - `PUT /api/todos/{id}` (editar título, descripción y estado `IsCompleted`)
+    - `DELETE /api/todos/{id}` (eliminar tarea)
+- **Estado de Tareas:**
+  - [x] **Tarea 1 (Rama y Gobernanza):** Crear rama `feat/initial-app` y registrar el plan aprobado en `MEMORY.md`.
+  - [x] **Tarea 2 (Backend Clean Architecture `.NET 10`):** Generar la solución `backend/TodoList.sln` con las 4 capas (`Domain`, `Application`, `Infrastructure`, `Api`) + `Tests` (`xUnit`, `ArchitectureTests` y pruebas de integración con `WebApplicationFactory`).
+  - [x] **Tarea 3 (Frontend React + TS + Docker):** Generar `frontend/` (React + TypeScript + Vite + Vitest sobre Node 26 LTS) consumiendo `VITE_API_URL`, más `Dockerfile`s y `docker-compose.yml`.
+  - [x] **Tarea 4 (Verificación y PR):** Ejecutar `dotnet test`, `npm test` y `npm run build`, sincronizar `README.md` y `MEMORY.md`, y crear el Pull Request con `gh pr create`.
